@@ -10,6 +10,12 @@
 <meta property="og:description" content="Calcolatore gratuito per host: scrivi il prezzo di oggi e scopri quello nuovo per incassare come prima, con IVA e cedolare secca comprese.">
 <meta property="og:url" content="https://regghy.github.io/conti-da-host/">
 <meta property="og:locale" content="it_IT">
+<meta property="og:image" content="https://regghy.github.io/conti-da-host/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Oggi 85 €, dal 13 ottobre 107 €: il nuovo prezzo su Airbnb per incassare come prima">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M10 14h30l18 18-18 18H10a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z' fill='%23e9b42a'/%3E%3Ccircle cx='18' cy='32' r='5' fill='%231e4a3b'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
@@ -127,6 +133,16 @@
   .muted { color: var(--ink-soft); }
   .warn { color: var(--ink); background: var(--wall-deep); padding: 10px 12px; border-radius: var(--radius-s); }
 
+  .share { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-top: 34px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .share-text { margin: 0; width: 100%; font-weight: 700; }
+  .share-btn {
+    font: inherit; font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 999px;
+    border: 2px solid var(--shutter); background: transparent; color: var(--shutter);
+  }
+  .share-btn.wa { background: var(--shutter); color: var(--wall); }
+  .share-ok { font-size: 0.95rem; color: var(--ink-soft); }
+
   /* Sezioni */
   section.block { padding: 36px 0; border-top: 2px solid var(--ink); }
   h2 { font-weight: 800; font-size: 1.6rem; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 8px; }
@@ -221,6 +237,13 @@
           <span class="tag-unit">a notte</span>
         </div>
         <ul class="facts" id="heroFacts"></ul>
+      </div>
+
+      <div class="share">
+        <p class="share-text">Conosci altri host? Mandagli il calcolatore.</p>
+        <a class="share-btn wa" id="shareWa" href="https://wa.me/?text=Calcola%20il%20nuovo%20prezzo%20per%20Airbnb%20dal%2013%20ottobre%3A%20https%3A%2F%2Fregghy.github.io%2Fconti-da-host%2F" target="_blank" rel="noopener">Invia su WhatsApp</a>
+        <button type="button" class="share-btn" id="copyLink">Copia link</button>
+        <span class="share-ok" id="copyOk" role="status"></span>
       </div>
     </section>
 
@@ -455,6 +478,12 @@
   ["heroInput", "splitInput", "airbnbFee", "bookingFee", "bookingPay", "pm", "oldHost", "oldGuest"].forEach(function (id) { $(id).addEventListener("input", render); });
   ["tax", "vat"].forEach(function (id) { $(id).addEventListener("change", render); });
   $("reset").addEventListener("click", function () { fillSettings(DEFAULTS); render(); });
+  $("copyLink").addEventListener("click", function () {
+    var url = "https://regghy.github.io/conti-da-host/";
+    var done = function () { $("copyOk").textContent = "Link copiato"; };
+    var fail = function () { $("copyOk").textContent = url; };
+    try { navigator.clipboard.writeText(url).then(done, fail); } catch (e) { fail(); }
+  });
   render();
 })();
 </script>
