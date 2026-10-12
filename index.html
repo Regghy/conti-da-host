@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nuove commissioni Airbnb: che prezzo mettere</title>
+<meta name="description" content="Calcolatore gratuito per host italiani: dal 13 ottobre 2026 Airbnb trattiene il 15,5% dall'host. Scopri che prezzo mettere per incassare come prima e quanto ti resta su Airbnb, Booking e con le prenotazioni dirette.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nuove commissioni Airbnb: che prezzo devi mettere?">
+<meta property="og:description" content="Calcolatore gratuito per host: scrivi il prezzo di oggi e scopri quello nuovo per incassare come prima, con IVA e cedolare secca comprese.">
+<meta property="og:url" content="https://regghy.github.io/conti-da-host/">
+<meta property="og:locale" content="it_IT">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wall: #edf1ee;        /* intonaco */
+    --wall-deep: #dfe6e1;
+    --shutter: #1e4a3b;     /* persiana */
+    --shutter-soft: #3f6e5d;
+    --ink: #16211d;
+    --ink-soft: #4b5a54;
+    --tag: #e9b42a;         /* portachiavi */
+    --tag-ink: #1e4a3b;
+    --line: #c6d1cb;
+    --field: #ffffff;
+    --cut-1: #5f6b66;       /* commissione */
+    --cut-2: #8e9a95;       /* IVA */
+    --cut-3: #b9c3be;       /* tasse */
+    --cut-4: #d6ddd9;       /* property manager */
+    --focus: #e9b42a;
+    --radius-s: 6px;
+    --radius-m: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --wall: #121a17; --wall-deep: #1a2420; --shutter: #8fc7ae; --shutter-soft: #6fa58d;
+      --ink: #e7eeea; --ink-soft: #a9b8b1; --tag: #e9b42a; --tag-ink: #16211d;
+      --line: #2f3d37; --field: #1c2622;
+      --cut-1: #7f8f88; --cut-2: #5c6b65; --cut-3: #44524c; --cut-4: #333f3a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --wall: #121a17; --wall-deep: #1a2420; --shutter: #8fc7ae; --shutter-soft: #6fa58d;
+    --ink: #e7eeea; --ink-soft: #a9b8b1; --tag: #e9b42a; --tag-ink: #16211d;
+    --line: #2f3d37; --field: #1c2622;
+    --cut-1: #7f8f88; --cut-2: #5c6b65; --cut-3: #44524c; --cut-4: #333f3a;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--wall);
+    color: var(--ink);
+    font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+  h1, h2, .tag-price, .brand {
+    font-family: "Bricolage Grotesque", "Atkinson Hyperlegible", system-ui, sans-serif;
+  }
+  .wrap { max-width: 44rem; margin: 0 auto; padding: 0 16px; }
+
+  .top { padding: 20px 0 0; }
+  .brand { font-weight: 800; font-size: 1rem; color: var(--shutter); letter-spacing: -0.01em; }
+
+  /* Hero: il calcolatore stesso */
+  .hero { padding: 28px 0 40px; }
+  h1 {
+    font-weight: 800;
+    font-size: clamp(1.9rem, 6vw, 2.9rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 14px;
+    max-width: 18ch;
+  }
+  .lede { margin: 0 0 26px; color: var(--ink-soft); max-width: 60ch; }
+
+  .mode {
+    display: inline-flex; gap: 4px; padding: 4px;
+    background: var(--wall-deep); border-radius: 999px; margin-bottom: 20px;
+    max-width: 100%; flex-wrap: wrap;
+  }
+  .mode button {
+    font: inherit; font-size: 0.95rem; border: 0; cursor: pointer;
+    padding: 8px 14px; border-radius: 999px; background: transparent; color: var(--ink-soft);
+  }
+  .mode button[aria-checked="true"] { background: var(--field); color: var(--ink); font-weight: 700; box-shadow: 0 1px 0 var(--line); }
+
+  .nowrap { white-space: nowrap; }
+  .ask { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 10px; font-size: 1.25rem; }
+  .money {
+    display: inline-flex; align-items: baseline; gap: 4px;
+    border-bottom: 3px solid var(--shutter); padding: 0 2px;
+  }
+  .money input {
+    font: inherit; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800;
+    font-size: 2rem; width: 4.2ch; border: 0; background: transparent; color: var(--ink);
+    padding: 0; text-align: right;
+  }
+  .money input::-webkit-outer-spin-button, .money input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .money input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+
+  .result { display: grid; grid-template-columns: auto 1fr; gap: 20px 28px; align-items: center; margin-top: 30px; }
+  .tag {
+    position: relative;
+    background: var(--tag); color: var(--tag-ink);
+    padding: 18px 26px 18px 54px;
+    border-radius: 14px 40px 40px 14px;
+    transform: rotate(-3deg);
+    min-width: 12rem;
+  }
+  .tag::before { /* foro del portachiavi */
+    content: ""; position: absolute; left: 18px; top: 50%;
+    width: 18px; height: 18px; margin-top: -9px; border-radius: 50%;
+    background: var(--wall); box-shadow: inset 0 2px 0 rgba(0,0,0,.18);
+  }
+  .tag-label { display: block; font-size: 0.95rem; font-weight: 700; }
+  .tag-price { display: block; font-weight: 800; font-size: clamp(2.8rem, 11vw, 4rem); line-height: 1; letter-spacing: -0.03em; }
+  .tag-unit { font-size: 0.95rem; }
+  .facts { margin: 0; padding: 0; list-style: none; }
+  .facts li { padding: 6px 0; border-top: 1px solid var(--line); }
+  .facts li:first-child { border-top: 0; }
+  .facts strong { font-weight: 700; }
+  .muted { color: var(--ink-soft); }
+  .warn { color: var(--ink); background: var(--wall-deep); padding: 10px 12px; border-radius: var(--radius-s); }
+
+  /* Sezioni */
+  section.block { padding: 36px 0; border-top: 2px solid var(--ink); }
+  h2 { font-weight: 800; font-size: 1.6rem; letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 8px; }
+  .block > p { max-width: 62ch; }
+
+  .split-ask { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin: 18px 0 22px; }
+  .money.small input { font-size: 1.5rem; width: 4ch; }
+
+  .platform { margin: 0 0 22px; }
+  .platform-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+  .platform-name { font-weight: 700; }
+  .platform-net { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 1.35rem; color: var(--shutter); white-space: nowrap; }
+  .bar { display: flex; height: 26px; border-radius: var(--radius-s); overflow: hidden; background: var(--wall-deep); }
+  .bar span { display: block; height: 100%; transition: width .25s ease; box-shadow: inset -2px 0 0 var(--wall); }
+  .bar .keep { background: var(--shutter); }
+  .bar .c1 { background: var(--cut-1); }
+  .bar .c2 { background: var(--cut-2); }
+  .bar .c3 { background: var(--cut-3); }
+  .bar .c4 { background: var(--cut-4); }
+  .platform-detail { font-size: 0.92rem; color: var(--ink-soft); margin-top: 4px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.9rem; color: var(--ink-soft); margin: 4px 0 18px; padding: 0; list-style: none; }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .direct-note { background: var(--field); border-left: 4px solid var(--shutter); padding: 12px 14px; border-radius: 0 var(--radius-s) var(--radius-s) 0; }
+
+  /* Impostazioni */
+  details.settings { border-top: 2px solid var(--ink); padding: 22px 0; }
+  details.settings summary { cursor: pointer; font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 1.35rem; list-style-position: inside; }
+  details.settings[open] summary { margin-bottom: 14px; }
+  .fields { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .field label { display: block; font-weight: 700; font-size: 0.98rem; }
+  .field small { display: block; color: var(--ink-soft); font-size: 0.88rem; }
+  .field .input {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 6px;
+    background: var(--field); border: 1px solid var(--line); border-radius: var(--radius-s); padding: 6px 10px;
+  }
+  .field input[type=number], .field select {
+    font: inherit; border: 0; background: transparent; color: var(--ink); width: 5.5rem;
+  }
+  .field select { width: auto; }
+  .check { display: flex; gap: 10px; align-items: flex-start; }
+  .check input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--shutter); }
+  .reset { font: inherit; font-size: 0.95rem; margin-top: 16px; background: transparent; border: 1px solid var(--line); color: var(--ink); padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+
+  .how ol { padding-left: 1.3rem; max-width: 62ch; }
+  .how li { margin-bottom: 8px; }
+  .sources { font-size: 0.92rem; padding-left: 1.1rem; }
+  .sources a, a { color: var(--shutter); }
+
+  footer { border-top: 2px solid var(--ink); padding: 22px 0 40px; font-size: 0.92rem; color: var(--ink-soft); }
+
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+  .money:focus-within { border-bottom-color: var(--tag); }
+
+  @media (min-width: 640px) {
+    .fields { grid-template-columns: 1fr 1fr; gap: 18px 28px; }
+  }
+  @media (max-width: 520px) {
+    .mode { display: grid; grid-template-columns: 1fr; width: 100%; border-radius: 14px; }
+    .mode button { border-radius: 10px; text-align: left; }
+    .result { grid-template-columns: 1fr; }
+    .tag { justify-self: start; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bar span { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><span class="brand">Conti da host</span></header>
+
+  <main>
+    <section class="hero" aria-labelledby="titolo">
+      <h1 id="titolo">Dal 13 ottobre Airbnb trattiene il 15,5% da te. Che prezzo devi mettere?</h1>
+      <p class="lede">Scrivi il prezzo a notte che chiedi oggi: ti diciamo il nuovo prezzo per incassare la stessa cifra di prima, con IVA sulla commissione e cedolare secca già comprese.</p>
+
+      <div class="mode" role="radiogroup" aria-label="Da cosa vuoi partire">
+        <button type="button" role="radio" aria-checked="true" data-mode="old">Parto dal prezzo di oggi</button>
+        <button type="button" role="radio" aria-checked="false" data-mode="net">Parto da quanto voglio incassare</button>
+      </div>
+
+      <div class="ask">
+        <label for="heroInput" id="heroLabel">Oggi su Airbnb chiedo</label>
+        <span class="nowrap"><span class="money"><input id="heroInput" type="number" inputmode="decimal" min="0" step="1" value="85" aria-describedby="heroUnit"><span>€</span></span>
+        <span id="heroUnit">a notte</span></span>
+      </div>
+
+      <div class="result" aria-live="polite">
+        <div class="tag">
+          <span class="tag-label">Dal 13 ottobre metti</span>
+          <span class="tag-price" id="tagPrice">107 €</span>
+          <span class="tag-unit">a notte</span>
+        </div>
+        <ul class="facts" id="heroFacts"></ul>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="t-split">
+      <h2 id="t-split">Quanto ti resta su ogni piattaforma</h2>
+      <p class="muted">Stesso prezzo, tre canali. La barra mostra dove finisce ogni euro che paga l'ospite.</p>
+      <div class="split-ask">
+        <label for="splitInput">Con un prezzo di</label>
+        <span class="money small"><input id="splitInput" type="number" inputmode="decimal" min="0" step="1" value="100"><span>€</span></span>
+        <span>a notte</span>
+      </div>
+      <ul class="legend" aria-hidden="true">
+        <li><i style="background:var(--shutter)"></i>Ti resta</li>
+        <li><i style="background:var(--cut-1)"></i>Commissione</li>
+        <li><i style="background:var(--cut-2)"></i>IVA sulla commissione</li>
+        <li><i style="background:var(--cut-3)"></i>Cedolare secca</li>
+        <li id="legendPm" hidden><i style="background:var(--cut-4)"></i>Property manager</li>
+      </ul>
+      <div id="platforms"></div>
+      <p class="direct-note" id="directNote"></p>
+    </section>
+
+    <details class="settings" id="settings">
+      <summary>Le tue percentuali</summary>
+      <p class="muted">Abbiamo messo i valori più comuni. Se nel tuo account sono diversi, cambiali qui: il calcolo si aggiorna subito e li ricordiamo su questo dispositivo.</p>
+      <div class="fields">
+        <div class="field">
+          <label for="airbnbFee">Commissione Airbnb dal 13 ottobre</label>
+          <small>Per la maggior parte degli host è 15,5%.</small>
+          <span class="input"><input id="airbnbFee" type="number" step="0.1" min="0" max="60"> %</span>
+        </div>
+        <div class="field">
+          <label for="bookingFee">Commissione Booking</label>
+          <small>Di solito 15%, ma dipende dal tuo contratto.</small>
+          <span class="input"><input id="bookingFee" type="number" step="0.1" min="0" max="60"> %</span>
+        </div>
+        <div class="field">
+          <label for="bookingPay">Costo dei pagamenti tramite Booking</label>
+          <small>Solo se Booking incassa per te. Lascia 0 se ti pagano gli ospiti.</small>
+          <span class="input"><input id="bookingPay" type="number" step="0.1" min="0" max="10"> %</span>
+        </div>
+        <div class="field">
+          <label for="tax">Tasse</label>
+          <small>Cedolare secca: 21% sul primo immobile, 26% dal secondo.</small>
+          <span class="input">
+            <select id="tax">
+              <option value="21">Cedolare 21%</option>
+              <option value="26">Cedolare 26%</option>
+              <option value="0">Non considerare le tasse</option>
+            </select>
+          </span>
+        </div>
+        <div class="field">
+          <label for="pm">Property manager</label>
+          <small>Percentuale sul lordo, se affidi la casa a qualcuno. Altrimenti 0.</small>
+          <span class="input"><input id="pm" type="number" step="0.5" min="0" max="60"> %</span>
+        </div>
+        <div class="field">
+          <span class="check">
+            <input id="vat" type="checkbox">
+            <label for="vat">Non ho partita IVA<small>Le piattaforme ti addebitano il 22% di IVA sulla commissione.</small></label>
+          </span>
+        </div>
+        <div class="field">
+          <label for="oldHost">Vecchia commissione Airbnb a tuo carico</label>
+          <small>Prima del 13 ottobre, di solito 3%.</small>
+          <span class="input"><input id="oldHost" type="number" step="0.1" min="0" max="60"> %</span>
+        </div>
+        <div class="field">
+          <label for="oldGuest">Vecchia commissione pagata dall'ospite</label>
+          <small>Serve solo a confrontare quanto pagava l'ospite. Di solito intorno al 14%.</small>
+          <span class="input"><input id="oldGuest" type="number" step="0.1" min="0" max="60"> %</span>
+        </div>
+      </div>
+      <button type="button" class="reset" id="reset">Rimetti i valori comuni</button>
+    </details>
+
+    <section class="block how" aria-labelledby="t-how">
+      <h2 id="t-how">Come facciamo il conto</h2>
+      <ol>
+        <li>Dal prezzo che paga l'ospite togliamo la commissione della piattaforma e, se non hai partita IVA, il 22% di IVA su quella commissione. Con Airbnb al 15,5% il costo reale diventa il 18,91%.</li>
+        <li>La cedolare secca si paga sull'intero prezzo, commissioni comprese, perché le commissioni non si possono scalare. Per questo il ricalcolo pesa più di quanto sembri.</li>
+        <li>Il nuovo prezzo è quello che ti lascia in tasca, dopo commissione, IVA e tasse, la stessa cifra che ti restava con il vecchio sistema (3% a te, il resto pagato dall'ospite).</li>
+        <li>La tassa di soggiorno non è compresa: la paga l'ospite e la versi al Comune, non cambia il tuo incasso.</li>
+        <li>La ritenuta del 21% che le piattaforme trattengono è un anticipo della cedolare: se paghi il 26%, la differenza la versi in dichiarazione.</li>
+      </ol>
+      <p><strong>Non è consulenza fiscale.</strong> Il calcolo è una stima basata sui valori che inserisci: per la tua situazione, e prima di cambiare i prezzi, verifica con il tuo commercialista e con le percentuali che vedi nel tuo account.</p>
+      <p class="muted">Fonti consultate il 12 ottobre 2026:</p>
+      <ul class="sources">
+        <li><a href="https://www.airbnb.com/help/article/1857" rel="noopener" target="_blank">Airbnb, centro assistenza: commissioni del servizio</a></li>
+        <li><a href="https://www.anbba.it/airbnb-nuove-commissioni-2026-tassazione-host/" rel="noopener" target="_blank">ANBBA: nuove commissioni Airbnb e tassazione degli host</a></li>
+        <li><a href="https://www.pmi.it/economia/mercati/497612/airbnb-commissioni-prezzi-affitti-brevi.html" rel="noopener" target="_blank">PMI.it: Airbnb cambia commissioni e prezzi dal 13 ottobre</a></li>
+        <li><a href="https://www.italiaoggi.it/diritto-e-fisco/airbnb-quadruplica-le-commissioni-affitti-brevi-verso-rincari-fino-al-36-75-fw490mc0" rel="noopener" target="_blank">ItaliaOggi: commissioni non deducibili con la cedolare secca</a></li>
+        <li><a href="https://www.lodgify.com/it/risorse/guida-proprietari-booking/costi-commissioni-booking/" rel="noopener" target="_blank">Lodgify: commissioni Booking in Italia e IVA</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    Strumento gratuito per host di affitti brevi. Aggiornato al 12 ottobre 2026.
+  </footer>
+</div>
+
+<script>
+(function () {
+  var DEFAULTS = { airbnbFee: 15.5, bookingFee: 15, bookingPay: 0, tax: "21", pm: 0, vat: true, oldHost: 3, oldGuest: 14 };
+  var KEY = "conti-da-host-v1";
+  var eur = new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR", useGrouping: "always" });
+  var eur0 = new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR", maximumFractionDigits: 0, useGrouping: "always" });
+  var pct = new Intl.NumberFormat("it-IT", { maximumFractionDigits: 1 });
+  var $ = function (id) { return document.getElementById(id); };
+  var mode = "old";
+
+  function load() {
+    try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && typeof s === "object") return Object.assign({}, DEFAULTS, s); } catch (e) {}
+    return Object.assign({}, DEFAULTS);
+  }
+  function save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
+
+  function fillSettings(s) {
+    ["airbnbFee", "bookingFee", "bookingPay", "pm", "oldHost", "oldGuest"].forEach(function (k) { $(k).value = s[k]; });
+    $("tax").value = String(s.tax);
+    $("vat").checked = !!s.vat;
+  }
+  function readSettings() {
+    var n = function (id) { var v = parseFloat($(id).value); return isFinite(v) && v >= 0 ? v : 0; };
+    return { airbnbFee: n("airbnbFee"), bookingFee: n("bookingFee"), bookingPay: n("bookingPay"), tax: $("tax").value, pm: n("pm"), vat: $("vat").checked, oldHost: n("oldHost"), oldGuest: n("oldGuest") };
+  }
+
+  // Quota del prezzo lordo che va via, per una commissione c (in %)
+  function cuts(s, feePct) {
+    var vat = s.vat ? 0.22 : 0;
+    return { fee: feePct / 100, vat: (feePct / 100) * vat, tax: parseFloat(s.tax) / 100, pm: s.pm / 100 };
+  }
+  function keepShare(c) { return 1 - c.fee - c.vat - c.tax - c.pm; }
+
+  function render() {
+    var s = readSettings();
+    save(s);
+    var cNew = cuts(s, s.airbnbFee);
+    var cOld = cuts(s, s.oldHost);
+    var kNew = keepShare(cNew), kOld = keepShare(cOld);
+    var input = parseFloat($("heroInput").value);
+    var facts = $("heroFacts");
+    var taxNote = s.tax === "0" ? "prima delle tasse" : "dopo commissione, IVA e cedolare";
+
+    if (kNew <= 0) {
+      $("tagPrice").textContent = "—";
+      facts.innerHTML = '<li class="warn">Con queste percentuali non ti resta niente. Controlla i valori in «Le tue percentuali».</li>';
+    } else if (!isFinite(input) || input <= 0) {
+      $("tagPrice").textContent = "—";
+      facts.innerHTML = '<li class="muted">Scrivi un importo a notte per vedere il calcolo.</li>';
+    } else {
+      var net, price;
+      if (mode === "old") {
+        net = input * kOld;
+        price = net / kNew;
+        var guestOld = input * (1 + s.oldGuest / 100);
+        var diffGuest = (price / guestOld - 1) * 100;
+        var up = (price / input - 1) * 100;
+        facts.innerHTML =
+          "<li>Così ti restano <strong>" + eur.format(net) + "</strong> a notte " + taxNote + ", come prima.</li>" +
+          "<li>Prezzo esatto: " + eur.format(price) + ", cioè <strong>+" + pct.format(up) + "%</strong> rispetto a oggi.</li>" +
+          "<li>L'ospite pagherà " + eur.format(price) + " invece di circa " + eur.format(guestOld) + " (" + (diffGuest >= 0 ? "+" : "") + pct.format(diffGuest) + "%).</li>" +
+          (input * kNew < net ? "<li class=\"muted\">Se lasci " + eur.format(input) + ", ti restano " + eur.format(input * kNew) + ": " + eur.format(net - input * kNew) + " in meno a notte.</li>" : "");
+      } else {
+        net = input;
+        price = net / kNew;
+        facts.innerHTML =
+          "<li>Per avere in tasca <strong>" + eur.format(net) + "</strong> a notte " + taxNote + ".</li>" +
+          "<li>Prezzo esatto: " + eur.format(price) + ".</li>" +
+          "<li class=\"muted\">Su Booking, con le tue percentuali, dovresti mettere " + priceFor(net, cuts(s, s.bookingFee + s.bookingPay)) + ".</li>";
+      }
+      $("tagPrice").textContent = eur0.format(Math.ceil(price - 0.004));
+    }
+    renderSplit(s);
+  }
+
+  function priceFor(net, c) { var k = keepShare(c); return k > 0 ? eur.format(net / k) : "—"; }
+
+  function renderSplit(s) {
+    var price = parseFloat($("splitInput").value);
+    var box = $("platforms");
+    $("legendPm").hidden = !(s.pm > 0);
+    if (!isFinite(price) || price <= 0) {
+      box.innerHTML = '<p class="muted">Scrivi un prezzo a notte per vedere il confronto.</p>';
+      $("directNote").hidden = true;
+      return;
+    }
+    var rows = [
+      { name: "Airbnb", c: cuts(s, s.airbnbFee), detail: "commissione " + pct.format(s.airbnbFee) + "%" },
+      { name: "Booking", c: cuts(s, s.bookingFee + s.bookingPay), detail: "commissione " + pct.format(s.bookingFee + s.bookingPay) + "%" },
+      { name: "Prenotazione diretta", c: cuts(s, 0), detail: "nessuna commissione" }
+    ];
+    var html = "";
+    rows.forEach(function (r) {
+      var k = Math.max(0, keepShare(r.c));
+      var parts = [["keep", k], ["c1", r.c.fee], ["c2", r.c.vat], ["c3", r.c.tax], ["c4", r.c.pm]];
+      var bar = parts.map(function (p) { return '<span class="' + p[0] + '" style="width:' + (Math.min(1, p[1]) * 100).toFixed(2) + '%"></span>'; }).join("");
+      var label = "Su " + eur.format(price) + " ti restano " + eur.format(price * k) +
+        ". Commissione " + eur.format(price * r.c.fee) + ", IVA " + eur.format(price * r.c.vat) +
+        ", tasse " + eur.format(price * r.c.tax) + (r.c.pm ? ", property manager " + eur.format(price * r.c.pm) : "") + ".";
+      html += '<div class="platform">' +
+        '<div class="platform-head"><span class="platform-name">' + r.name + '</span><span class="platform-net">' + eur.format(price * k) + '</span></div>' +
+        '<div class="bar" role="img" aria-label="' + label + '">' + bar + '</div>' +
+        '<div class="platform-detail">' + r.detail + (r.c.vat ? " + IVA" : "") + ' · ti resta il ' + pct.format(k * 100) + '%</div>' +
+        '</div>';
+    });
+    box.innerHTML = html;
+    var gap = price * (keepShare(rows[2].c) - keepShare(rows[0].c));
+    var note = $("directNote");
+    note.hidden = false;
+    note.textContent = "Con una prenotazione diretta, allo stesso prezzo, ti restano " + eur.format(gap) + " in più a notte rispetto ad Airbnb. Su 100 notti l'anno fanno " + eur0.format(gap * 100) + ".";
+  }
+
+  function setMode(m) {
+    mode = m;
+    document.querySelectorAll(".mode button").forEach(function (b) { b.setAttribute("aria-checked", String(b.dataset.mode === m)); });
+    var input = $("heroInput");
+    if (m === "old") { $("heroLabel").textContent = "Oggi su Airbnb chiedo"; input.value = 85; document.querySelector(".tag-label").textContent = "Dal 13 ottobre metti"; }
+    else { $("heroLabel").textContent = "Voglio che mi restino"; input.value = 60; document.querySelector(".tag-label").textContent = "Su Airbnb metti"; }
+    render();
+  }
+
+  fillSettings(load());
+  document.querySelectorAll(".mode button").forEach(function (b) {
+    b.addEventListener("click", function () { setMode(b.dataset.mode); });
+    b.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") { var other = b.dataset.mode === "old" ? "net" : "old"; setMode(other); document.querySelector('.mode [data-mode="' + other + '"]').focus(); e.preventDefault(); }
+    });
+  });
+  ["heroInput", "splitInput", "airbnbFee", "bookingFee", "bookingPay", "pm", "oldHost", "oldGuest"].forEach(function (id) { $(id).addEventListener("input", render); });
+  ["tax", "vat"].forEach(function (id) { $(id).addEventListener("change", render); });
+  $("reset").addEventListener("click", function () { fillSettings(DEFAULTS); render(); });
+  render();
+})();
+</script>
+</body>
+</html>
